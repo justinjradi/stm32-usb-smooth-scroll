@@ -57,6 +57,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 void tim10_clear(void);
 uint16_t tim10_tick(void);
 void tim10_wait(uint16_t delay);
+int8_t calculate_vector(uint32_t adc_value);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -1,3 +1,2 @@
 ../USB_DEVICE/App/usb_device.c:57:6:send_mouse_report	16	static
-../USB_DEVICE/App/usb_device.c:63:6:send_viewport_report	16	static
 ../USB_DEVICE/App/usb_device.c:74:6:MX_USB_DEVICE_Init	8	static

@@ -60,11 +60,11 @@ void send_mouse_report(MouseReport r)
 	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&r, sizeof (MouseReport));
 }
 
-void send_viewport_report(ViewportReport r)
-{
-	r.report_ID = REPORTID_VIEWPORT;
-	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&r, sizeof (MouseReport));
-}
+//void send_viewport_report(ViewportReport r)
+//{
+//	r.report_ID = REPORTID_VIEWPORT;
+//	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&r, sizeof (MouseReport));
+//}
 /* USER CODE END 1 */
 
 /**

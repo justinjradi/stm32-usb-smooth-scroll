@@ -51,30 +51,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-typedef struct __attribute__((packed))
-{
-	uint8_t report_ID;
-	uint8_t button_1 : 1;
-	uint8_t button_2 : 1;
-	uint8_t button_3 : 1;
-	uint8_t padding : 2;
-	int8_t pointer_x;
-	int8_t pointer_y;
-} MouseReport;
 
-typedef struct __attribute__((packed))
-{
-	uint8_t report_ID;
-	int8_t pan_x;
-	int8_t pan_y;
-	int8_t zoom;
-} ViewportReport;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 void send_mouse_report(MouseReport r);
-void send_viewport_report(ViewportReport r);
+//void send_viewport_report(ViewportReport r);
 /* USER CODE END PFP */
 
 /*

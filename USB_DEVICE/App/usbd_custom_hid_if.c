@@ -31,7 +31,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+ResMultiplierReport resMultiplierReport;
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -91,44 +91,75 @@
 __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END =
 {
   /* USER CODE BEGIN 0 */
-	0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-	0x09, 0x02,                    // USAGE (Mouse)
-	0xa1, 0x01,                    // COLLECTION (Application)
-	0x09, 0x01,                    //   USAGE (Pointer)
-	0xa1, 0x00,                    //   COLLECTION (Physical)
-	0x85, 0x01,                    //     REPORT_ID (1)
-	0x05, 0x09,                    //     USAGE_PAGE (Button)
-	0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
-	0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
-	0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-	0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-	0x95, 0x03,                    //     REPORT_COUNT (3)
-	0x75, 0x01,                    //     REPORT_SIZE (1)
-	0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-	0x95, 0x01,                    //     REPORT_COUNT (1)
-	0x75, 0x05,                    //     REPORT_SIZE (5)
-	0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
-	0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-	0x09, 0x30,                    //     USAGE (X)
-	0x09, 0x31,                    //     USAGE (Y)
-	0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-	0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
-	0x75, 0x08,                    //     REPORT_SIZE (8)
-	0x95, 0x02,                    //     REPORT_COUNT (2)
-	0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-	0xc0,                          //   END_COLLECTION
-	0xc0,                          // END_COLLECTION
-	0x06, 0x00, 0xff,              // USAGE_PAGE (Vendor Defined Page 1)
-	0x09, 0x01,                    // USAGE (Vendor Usage 1)
-	0xa1, 0x01,                    // COLLECTION (Application)
-	0xa1, 0x00,                    //   COLLECTION (Physical)
-	0x85, 0x02,                    //     REPORT_ID (2)
-	0x09, 0x02,                    //     USAGE (Vendor Usage 3: Pan X)
-	0x09, 0x02,                    //     USAGE (Vendor Usage 4: Pan Y)
-	0x09, 0x02,                    //     USAGE (Vendor Usage 5: Zoom)
-	0x95, 0x03,                    //     REPORT_COUNT (3)
-	0x81, 0x06,                     //     INPUT (Data,Var,Rel)
-	0xc0,                          //   END_COLLECTION
+    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+    0x09, 0x02,                    // USAGE (Mouse)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x05, 0x01,                    //   USAGE_PAGE (Generic Desktop)
+    0x09, 0x02,                    //   USAGE (Mouse)
+    0xa1, 0x02,                    //   COLLECTION (Logical)
+    0x85, REPORTID_MOUSE,          //     REPORT_ID (REPORTID_MOUSE)
+    0x09, 0x01,                    //     USAGE (Pointer)
+    0xa1, 0x00,                    //     COLLECTION (Physical)
+    0x05, 0x09,                    //       USAGE_PAGE (Button)
+    0x19, 0x01,                    //       USAGE_MINIMUM (Button 1)
+    0x29, 0x05,                    //       USAGE_MAXIMUM (Button 5)
+    0x15, 0x00,                    //       LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //       LOGICAL_MAXIMUM (1)
+    0x95, 0x05,                    //       REPORT_COUNT (5)
+    0x75, 0x01,                    //       REPORT_SIZE (1)
+    0x81, 0x02,                    //       INPUT (Data,Var,Abs)
+    0x95, 0x03,                    //       REPORT_COUNT (3)
+    0x81, 0x03,                    //       INPUT (Cnst,Var,Abs)
+    0x05, 0x01,                    //       USAGE_PAGE (Generic Desktop)
+    0x09, 0x30,                    //       USAGE (X)
+    0x09, 0x31,                    //       USAGE (Y)
+    0x95, 0x02,                    //       REPORT_COUNT (2)
+    0x75, 0x08,                    //       REPORT_SIZE (8)
+    0x15, 0x81,                    //       LOGICAL_MINIMUM (-127)
+    0x25, 0x7f,                    //       LOGICAL_MAXIMUM (127)
+    0x81, 0x06,                    //       INPUT (Data,Var,Rel)
+    0xa1, 0x02,                    //       COLLECTION (Logical)
+    0x85, REPORTID_RES_MULTIPLIER, //         REPORT_ID (REPORTID_RES_MULTIPLIER)
+    0x09, 0x48,                    //         USAGE (Resolution Multiplier)
+    0x15, 0x00,                    //         LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //         LOGICAL_MAXIMUM (1)
+    0x35, 0x01,                    //         PHYSICAL_MINIMUM (1)
+    0x45, 0x04,                    //         PHYSICAL_MAXIMUM (4)
+    0x95, 0x01,                    //         REPORT_COUNT (1)
+    0x75, 0x02,                    //         REPORT_SIZE (2)
+    0xb1, 0x02,                    //         FEATURE (Data,Var,Abs)
+    0x85, REPORTID_MOUSE,          //         REPORT_ID (REPORTID_MOUSE)
+    0x09, 0x38,                    //         USAGE (Wheel)
+    0x15, 0x81,                    //         LOGICAL_MINIMUM (-127)
+    0x25, 0x7f,                    //         LOGICAL_MAXIMUM (127)
+    0x35, 0x00,                    //         PHYSICAL_MINIMUM (0)
+    0x45, 0x00,                    //         PHYSICAL_MAXIMUM (0)
+    0x75, 0x08,                    //         REPORT_SIZE (8)
+    0x81, 0x06,                    //         INPUT (Data,Var,Rel)
+    0xc0,                          // END_COLLECTION
+    0xa1, 0x02,                    //       COLLECTION (Logical)
+    0x85, REPORTID_RES_MULTIPLIER, //         REPORT_ID (REPORTID_RES_MULTIPLIER)
+    0x09, 0x48,                    //         USAGE (Resolution Multiplier)
+    0x15, 0x00,                    //         LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //         LOGICAL_MAXIMUM (1)
+    0x35, 0x01,                    //         PHYSICAL_MINIMUM (1)
+    0x45, 0x04,                    //         PHYSICAL_MAXIMUM (4)
+    0x75, 0x02,                    //         REPORT_SIZE (2)
+    0xb1, 0x02,                    //         FEATURE (Data,Var,Abs)
+    0x35, 0x00,                    //         PHYSICAL_MINIMUM (0)
+    0x45, 0x00,                    //         PHYSICAL_MAXIMUM (0)
+    0x75, 0x04,                    //         REPORT_SIZE (4)
+    0xb1, 0x03,                    //         FEATURE (Cnst,Var,Abs)
+    0x85, REPORTID_MOUSE,          //         REPORT_ID (REPORTID_MOUSE)
+    0x05, 0x0c,                    //         USAGE_PAGE (Consumer Devices)
+    0x0a, 0x38, 0x02,              //         USAGE (AC Pan)
+    0x15, 0x81,                    //         LOGICAL_MINIMUM (-127)
+    0x25, 0x7f,                    //         LOGICAL_MAXIMUM (127)
+    0x75, 0x08,                    //         REPORT_SIZE (8)
+    0x81, 0x06,                    //         INPUT (Data,Var,Rel)
+    0xc0,                          // END_COLLECTION
+    0xc0,                          // END_COLLECTION
+    0xc0,                          // END_COLLECTION
   /* USER CODE END 0 */
   0xC0    /*     END_COLLECTION	             */
 };
@@ -161,7 +192,9 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 
 static int8_t CUSTOM_HID_Init_FS(void);
 static int8_t CUSTOM_HID_DeInit_FS(void);
-static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state);
+static int8_t CUSTOM_HID_OutEvent_FS(uint8_t report_ID, uint8_t data);
+uint8_t getScrollRes(void);
+uint8_t getPanRes(void);
 
 /**
   * @}
@@ -210,18 +243,21 @@ static int8_t CUSTOM_HID_DeInit_FS(void)
   * @param  state: Event state
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
-static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
+static int8_t CUSTOM_HID_OutEvent_FS(uint8_t report_ID, uint8_t data)
 {
   /* USER CODE BEGIN 6 */
-  UNUSED(event_idx);
-  UNUSED(state);
+
+	if (report_ID == REPORTID_RES_MULTIPLIER)
+	{
+		resMultiplierReport.scroll_resolution = data & 0b00000011;
+		resMultiplierReport.pan_resolution = data & 0b00001100;
+	}
 
   /* Start next USB packet transfer once data processing is completed */
   if (USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS) != (uint8_t)USBD_OK)
   {
     return -1;
   }
-
   return (USBD_OK);
   /* USER CODE END 6 */
 }
@@ -242,7 +278,14 @@ static int8_t USBD_CUSTOM_HID_SendReport_FS(uint8_t *report, uint16_t len)
 /* USER CODE END 7 */
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
-
+uint8_t getScrollRes(void)
+{
+	return resMultiplierReport.scroll_resolution;
+}
+uint8_t getPanRes(void)
+{
+	return resMultiplierReport.pan_resolution;
+}
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 /**
   * @}

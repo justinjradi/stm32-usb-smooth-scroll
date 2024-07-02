@@ -1,3 +1,5 @@
-../USB_DEVICE/App/usbd_custom_hid_if.c:189:15:CUSTOM_HID_Init_FS	1
-../USB_DEVICE/App/usbd_custom_hid_if.c:200:15:CUSTOM_HID_DeInit_FS	1
-../USB_DEVICE/App/usbd_custom_hid_if.c:213:15:CUSTOM_HID_OutEvent_FS	2
+../USB_DEVICE/App/usbd_custom_hid_if.c:222:15:CUSTOM_HID_Init_FS	1
+../USB_DEVICE/App/usbd_custom_hid_if.c:233:15:CUSTOM_HID_DeInit_FS	1
+../USB_DEVICE/App/usbd_custom_hid_if.c:246:15:CUSTOM_HID_OutEvent_FS	3
+../USB_DEVICE/App/usbd_custom_hid_if.c:281:9:getScrollRes	1
+../USB_DEVICE/App/usbd_custom_hid_if.c:285:9:getPanRes	1

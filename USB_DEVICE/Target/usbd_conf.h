@@ -36,14 +36,55 @@
 
 /* USER CODE BEGIN INCLUDE */
 
-// Endpoint Parameters
+/* Endpoint Parameters -------------------------------------------------------*/
+
 #define CUSTOM_HID_EPIN_ADDR                         0x81U
-#define CUSTOM_HID_EPIN_SIZE                         4U			// IN endpoint size
+#define CUSTOM_HID_EPIN_SIZE                         16U
 #define CUSTOM_HID_EPOUT_ADDR                        0x01U
-#define CUSTOM_HID_EPOUT_SIZE                        2U			// OUT endpoint size
-// Report Descriptor Parameters
+#define CUSTOM_HID_EPOUT_SIZE                        16U
+
+/* Device-Specific Definitions -------------------------------------------------------*/
+
 #define REPORTID_MOUSE																1
-#define REPORTID_VIEWPORT															2
+#define REPORTID_RES_MULTIPLIER												2
+#define PAN_RESOLUTION																1
+#define SCROLL_RESOLUTION															1
+
+/* Report Typedefs -------------------------------------------------------*/
+
+// Mouse Input Report (6 bytes)
+typedef struct __attribute__((packed))
+{
+	uint8_t report_ID;
+	uint8_t left_button : 1;
+	uint8_t right_button : 1;
+	uint8_t middle_button : 1;
+	uint8_t back_button : 1;
+	uint8_t forward_button : 1;
+	uint8_t padding : 3;
+	int8_t x;
+	int8_t y;
+	int8_t scroll;
+	int8_t pan;
+} MouseReport;
+
+// Not Implemented
+typedef struct __attribute__((packed))
+{
+	uint8_t report_ID;
+	int8_t scroll;
+	int8_t pan;
+	int8_t zoom;
+} ViewportReport;
+
+// Resolution Multiplier Feature Report (Set_Feature, 2 bytes)
+typedef struct __attribute__((packed))
+{
+	uint8_t report_ID;
+	uint8_t scroll_resolution : 2;
+	uint8_t pan_resolution : 2;
+	uint8_t padding : 4;
+} ResMultiplierReport;
 
 /* USER CODE END INCLUDE */
 
@@ -86,7 +127,7 @@
 /*---------- -----------*/
 #define USBD_CUSTOMHID_OUTREPORT_BUF_SIZE     2U
 /*---------- -----------*/
-#define USBD_CUSTOM_HID_REPORT_DESC_SIZE     75U
+#define USBD_CUSTOM_HID_REPORT_DESC_SIZE     136U
 /*---------- -----------*/
 #define CUSTOM_HID_FS_BINTERVAL     1U
 

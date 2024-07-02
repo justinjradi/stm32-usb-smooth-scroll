@@ -102,6 +102,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_ADC_Start_DMA(&hadc1, adc1_buffer, 3);
   int user_button_switch = 0;
+  MouseReport mouseReport;
+  uint8_t scroll_resolution = 0;
+  uint8_t pan_resolution = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,17 +119,21 @@ int main(void)
 
 		if (user_button_switch)
 		{
+			scroll_resolution = getScrollRes();
+			pan_resolution = getPanRes();
 			HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, GPIO_PIN_SET);
-			r.pan_x = calculate_vector(adc1_buffer[0]);
-			r.pan_y = calculate_vector(adc1_buffer[1]);
-			r.zoom = calculate_vector(adc1_buffer[2]);
-			send_viewport_report(r);
-			HAL_Delay(2000);
+			mouseReport.pan = 1;
+			mouseReport.scroll = 1;
+//			mouseReport.pan = filter_vector(calculate_vector(adc1_buffer[0]), 10, 127);
+//			mouseReport.scroll = filter_vector(calculate_vector(adc1_buffer[1]), 10, 127);
+			send_mouse_report(mouseReport);
+			HAL_Delay(500);
 		}
 		else
 		{
 			HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, GPIO_PIN_RESET);
 		}
+
 
     /* USER CODE END WHILE */
 
@@ -365,6 +372,25 @@ void tim10_wait(uint16_t delay)
 int8_t calculate_vector(uint32_t adc_value)
 {
 	return (int8_t)(((adc_value & 0x00000FFF) >> 4) - 128);
+}
+
+// Threshold must be positive
+int8_t filter_vector(int8_t vector, int8_t threshold, int8_t max)
+{
+	int8_t abs_vector = vector;
+	if (vector < 0)
+	{
+		abs_vector *= -1;
+	}
+	if (abs_vector < threshold)
+	{
+		return 0;
+	}
+	if (abs_vector > max)
+	{
+		return 0;
+	}
+	return vector;
 }
 /* USER CODE END 4 */
 

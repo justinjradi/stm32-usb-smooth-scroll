@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+extern uint8_t getScrollRes(void);
+extern uint8_t getPanRes(void);
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,7 +103,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_ADC_Start_DMA(&hadc1, adc1_buffer, 3);
   int user_button_switch = 0;
-  MouseReport mouseReport;
+  MouseReport mouseReport = {0};
   uint8_t scroll_resolution = 0;
   uint8_t pan_resolution = 0;
   /* USER CODE END 2 */
@@ -122,7 +123,7 @@ int main(void)
 			scroll_resolution = getScrollRes();
 			pan_resolution = getPanRes();
 			HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, GPIO_PIN_SET);
-			mouseReport.pan = 1;
+			mouseReport.pan = 0;
 			mouseReport.scroll = 1;
 //			mouseReport.pan = filter_vector(calculate_vector(adc1_buffer[0]), 10, 127);
 //			mouseReport.scroll = filter_vector(calculate_vector(adc1_buffer[1]), 10, 127);

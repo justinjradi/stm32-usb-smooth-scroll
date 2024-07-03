@@ -411,8 +411,8 @@ static uint8_t USBD_CUSTOM_HID_Setup(USBD_HandleTypeDef *pdev,
         	{
         		ResMultiplierReport r = {0};
         		r.report_ID = REPORTID_RES_MULTIPLIER;
-        		r.pan_resolution = PAN_RESOLUTION;
-        		r.scroll_resolution = SCROLL_RESOLUTION;
+        		r.pan_resolution = PR_REPORTED;
+        		r.scroll_resolution = SR_REPORTED;
         		USBD_CtlSendData(pdev, (uint8_t*)&r, sizeof (r));
         	}
         	break;

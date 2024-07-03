@@ -31,7 +31,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-ResMultiplierReport resMultiplierReport;
+ResMultiplierReport resMultiplierReport = {0};
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -122,11 +122,11 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
     0x85, REPORTID_RES_MULTIPLIER, //         REPORT_ID (REPORTID_RES_MULTIPLIER)
     0x09, 0x48,                    //         USAGE (Resolution Multiplier)
     0x15, 0x00,                    //         LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //         LOGICAL_MAXIMUM (1)
+    0x25, SR_LMAX,                 //         LOGICAL_MAXIMUM (SR_LMAX)
     0x35, 0x01,                    //         PHYSICAL_MINIMUM (1)
-    0x45, 0x04,                    //         PHYSICAL_MAXIMUM (4)
+    0x45, SR_PMAX,                 //         PHYSICAL_MAXIMUM (4)
     0x95, 0x01,                    //         REPORT_COUNT (1)
-    0x75, 0x02,                    //         REPORT_SIZE (2)
+    0x75, 0x04,                    //         REPORT_SIZE (4)
     0xb1, 0x02,                    //         FEATURE (Data,Var,Abs)
     0x85, REPORTID_MOUSE,          //         REPORT_ID (REPORTID_MOUSE)
     0x09, 0x38,                    //         USAGE (Wheel)
@@ -141,20 +141,18 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
     0x85, REPORTID_RES_MULTIPLIER, //         REPORT_ID (REPORTID_RES_MULTIPLIER)
     0x09, 0x48,                    //         USAGE (Resolution Multiplier)
     0x15, 0x00,                    //         LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //         LOGICAL_MAXIMUM (1)
+    0x25, PR_LMAX,                 //         LOGICAL_MAXIMUM (PR_LMAX)
     0x35, 0x01,                    //         PHYSICAL_MINIMUM (1)
-    0x45, 0x04,                    //         PHYSICAL_MAXIMUM (4)
-    0x75, 0x02,                    //         REPORT_SIZE (2)
-    0xb1, 0x02,                    //         FEATURE (Data,Var,Abs)
-    0x35, 0x00,                    //         PHYSICAL_MINIMUM (0)
-    0x45, 0x00,                    //         PHYSICAL_MAXIMUM (0)
+    0x45, PR_PMAX,                  //         PHYSICAL_MAXIMUM (PR_PMAX)
     0x75, 0x04,                    //         REPORT_SIZE (4)
-    0xb1, 0x03,                    //         FEATURE (Cnst,Var,Abs)
+    0xb1, 0x02,                    //         FEATURE (Data,Var,Abs)
     0x85, REPORTID_MOUSE,          //         REPORT_ID (REPORTID_MOUSE)
     0x05, 0x0c,                    //         USAGE_PAGE (Consumer Devices)
     0x0a, 0x38, 0x02,              //         USAGE (AC Pan)
     0x15, 0x81,                    //         LOGICAL_MINIMUM (-127)
     0x25, 0x7f,                    //         LOGICAL_MAXIMUM (127)
+    0x35, 0x00,                    //         PHYSICAL_MINIMUM (0)
+    0x45, 0x00,                    //         PHYSICAL_MAXIMUM (0)
     0x75, 0x08,                    //         REPORT_SIZE (8)
     0x81, 0x06,                    //         INPUT (Data,Var,Rel)
     0xc0,                          // END_COLLECTION
@@ -249,8 +247,8 @@ static int8_t CUSTOM_HID_OutEvent_FS(uint8_t report_ID, uint8_t data)
 
 	if (report_ID == REPORTID_RES_MULTIPLIER)
 	{
-		resMultiplierReport.scroll_resolution = data & 0b00000011;
-		resMultiplierReport.pan_resolution = data & 0b00001100;
+		resMultiplierReport.scroll_resolution = data & 0x0F;
+		resMultiplierReport.pan_resolution = data & 0xF0;
 	}
 
   /* Start next USB packet transfer once data processing is completed */

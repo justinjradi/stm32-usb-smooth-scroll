@@ -47,12 +47,8 @@
 
 #define REPORTID_MOUSE																1
 #define REPORTID_RES_MULTIPLIER												2
-#define SR_LMAX																				1
-#define SR_PMAX																				15
-#define SR_REPORTED																		SR_PMAX
-#define PR_LMAX																				1
-#define PR_PMAX																				15
-#define PR_REPORTED																		PR_PMAX
+#define MAX_SCROLL_RES																120
+#define MAX_PAN_RES  																	120
 
 /* Report Typedefs -------------------------------------------------------*/
 
@@ -85,8 +81,9 @@ typedef struct __attribute__((packed))
 typedef struct __attribute__((packed))
 {
 	uint8_t report_ID;
-	uint8_t scroll_resolution : 4;
-	uint8_t pan_resolution : 4;
+	uint8_t scroll_resolution : 2;
+	uint8_t pan_resolution : 2;
+	uint8_t padding : 4;
 } ResMultiplierReport;
 
 /* USER CODE END INCLUDE */
@@ -130,7 +127,7 @@ typedef struct __attribute__((packed))
 /*---------- -----------*/
 #define USBD_CUSTOMHID_OUTREPORT_BUF_SIZE     2U
 /*---------- -----------*/
-#define USBD_CUSTOM_HID_REPORT_DESC_SIZE     132U
+#define USBD_CUSTOM_HID_REPORT_DESC_SIZE     144U
 /*---------- -----------*/
 #define CUSTOM_HID_FS_BINTERVAL     1U
 

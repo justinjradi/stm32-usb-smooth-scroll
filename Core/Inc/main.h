@@ -58,7 +58,6 @@ void tim10_clear(void);
 uint16_t tim10_tick(void);
 void tim10_wait(uint16_t delay);
 int8_t calculate_vector(uint32_t adc_value);
-int8_t filter_vector(int8_t vector, int8_t threshold, int8_t max);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -123,12 +123,10 @@ int main(void)
 			scroll_resolution = getScrollRes();
 			pan_resolution = getPanRes();
 			HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, GPIO_PIN_SET);
-			mouseReport.pan = 0;
-			mouseReport.scroll = 1;
-//			mouseReport.pan = filter_vector(calculate_vector(adc1_buffer[0]), 10, 127);
-//			mouseReport.scroll = filter_vector(calculate_vector(adc1_buffer[1]), 10, 127);
+			mouseReport.scroll = calculate_vector(adc1_buffer[0]);
+			mouseReport.pan = calculate_vector(adc1_buffer[1]);
 			send_mouse_report(mouseReport);
-			HAL_Delay(500);
+			HAL_Delay(10);
 		}
 		else
 		{
@@ -372,27 +370,25 @@ void tim10_wait(uint16_t delay)
 // Actual adc_value must be 12 bits in resolution
 int8_t calculate_vector(uint32_t adc_value)
 {
-	return (int8_t)(((adc_value & 0x00000FFF) >> 4) - 128);
+	int8_t v = (int8_t)(((adc_value & 0x00000FFF) >> 4) - 128);
+	if (v == -128) v = 127;
+	else v *= -1;
+
+	if (v < -125) return -100;
+	else if (v < -95) return -60;
+	else if (v < -65) return -30;
+	else if (v < -40) return -5;
+	else if (v < -15) return -1;
+
+	else if (v > 125) return 100;
+	else if (v > 95) return 60;
+	else if (v > 65) return 30;
+	else if (v > 40) return 5;
+	else if (v > 15) return 1;
+
+	else return 0;
 }
 
-// Threshold must be positive
-int8_t filter_vector(int8_t vector, int8_t threshold, int8_t max)
-{
-	int8_t abs_vector = vector;
-	if (vector < 0)
-	{
-		abs_vector *= -1;
-	}
-	if (abs_vector < threshold)
-	{
-		return 0;
-	}
-	if (abs_vector > max)
-	{
-		return 0;
-	}
-	return vector;
-}
 /* USER CODE END 4 */
 
 /**
